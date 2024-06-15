@@ -9,6 +9,7 @@ import dev.darshit.java_ssh_tunnel.ssh.UserDetails;
 public final class Tunneler {
 
     private final JSch jsch;
+
     private final Session session;
 
     private final TunnelDetails tunnelDetails;
