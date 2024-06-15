@@ -1,37 +1,37 @@
-package dev.darshit.java_port_forwarder;
+package dev.darshit.java_ssh_tunnel;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-import dev.darshit.java_port_forwarder.ssh.ForwardDetails;
-import dev.darshit.java_port_forwarder.ssh.UserDetails;
+import dev.darshit.java_ssh_tunnel.ssh.TunnelDetails;
+import dev.darshit.java_ssh_tunnel.ssh.UserDetails;
 
-public final class Forwarder {
+public final class Tunneler {
 
     private final JSch jsch;
     private final Session session;
 
-    private final ForwardDetails forwardDetails;
+    private final TunnelDetails tunnelDetails;
 
-    public Forwarder(JSch jsch, Session session, ForwardDetails forwardDetails) throws JSchException {
+    public Tunneler(JSch jsch, Session session, TunnelDetails tunnelDetails) throws JSchException {
         this.jsch = jsch;
         this.session = session;
         this.session.setConfig("StrictHostKeyChecking", "no"); // deliberate for only testing usage
         this.session.connect();
-        this.forwardDetails = forwardDetails;
+        this.tunnelDetails = tunnelDetails;
     }
 
-    public Forwarder(UserDetails userDetails, ForwardDetails forwardDetails) throws JSchException {
+    public Tunneler(UserDetails userDetails, TunnelDetails tunnelDetails) throws JSchException {
         this.jsch = new JSch();
         this.session = this.jsch.getSession(userDetails.getUserName(), userDetails.getSshHost(), userDetails.getSshPort());
         this.session.setPassword(userDetails.getPassword());
         this.session.setConfig("StrictHostKeyChecking", "no"); // deliberate for only testing usage
         this.session.connect();
-        this.forwardDetails = forwardDetails;
+        this.tunnelDetails = tunnelDetails;
     }
 
-    public Forwarder forward() throws JSchException {
-        this.session.setPortForwardingL(forwardDetails.getLocalPort(), forwardDetails.getRemoteHost(), forwardDetails.getRemotePort());
+    public Tunneler tunnel() throws JSchException {
+        this.session.setPortForwardingL(tunnelDetails.localPort(), tunnelDetails.remoteHost(), tunnelDetails.remotePort());
         return this;
     }
 

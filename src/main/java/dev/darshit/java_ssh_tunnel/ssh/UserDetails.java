@@ -1,4 +1,4 @@
-package dev.darshit.java_port_forwarder.ssh;
+package dev.darshit.java_ssh_tunnel.ssh;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -7,9 +7,16 @@ public class UserDetails {
 
     private final String userName;
     private final String sshHost;
-    private int sshPort = 22;
+    private final int sshPort;
 
     private final byte[] password;
+
+    public UserDetails(String userName, String password, String sshHost) {
+        this.userName = userName;
+        this.sshHost = sshHost;
+        this.password = password.getBytes(StandardCharsets.UTF_8);
+        this.sshPort = 22; // default port
+    }
 
     public UserDetails(String userName, String password, String sshHost, int sshPort) {
         this.userName = userName;
