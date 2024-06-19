@@ -25,15 +25,25 @@ public final class MultiTunneler {
 
     public void forward() {
         try {
+            System.out.println("Starting tunneling...");
             for (TunnelDetails tunnelDetails : tunnelDetailsSet) {
-                tunnels.add(new Tunneler(userDetails, tunnelDetails).tunnel());
+                startTunnel(tunnelDetails);
             }
             System.out.println("Press Enter to terminate the tunnels...");
             System.in.read();
-        } catch (JSchException | IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
             tunnels.forEach(Tunneler::disconnect);
+        }
+    }
+
+    private void startTunnel(TunnelDetails tunnelDetails) {
+        try {
+            tunnels.add(new Tunneler(userDetails, tunnelDetails).tunnel());
+            System.out.println(tunnelDetails);
+        } catch (JSchException e) {
+            System.err.println("Failed: " + tunnelDetails);
         }
     }
 }

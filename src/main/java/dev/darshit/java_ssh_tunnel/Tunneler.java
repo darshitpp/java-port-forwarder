@@ -6,6 +6,8 @@ import com.jcraft.jsch.Session;
 import dev.darshit.java_ssh_tunnel.ssh.TunnelDetails;
 import dev.darshit.java_ssh_tunnel.ssh.UserDetails;
 
+import java.util.Objects;
+
 public final class Tunneler {
 
     private final JSch jsch;
@@ -40,5 +42,23 @@ public final class Tunneler {
         if (session.isConnected()) {
             this.session.disconnect();
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tunneler tunneler = (Tunneler) o;
+        return Objects.equals(jsch, tunneler.jsch) && Objects.equals(session, tunneler.session) && Objects.equals(tunnelDetails, tunneler.tunnelDetails);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(jsch, session, tunnelDetails);
+    }
+
+    @Override
+    public String toString() {
+        return tunnelDetails.remoteHost() + ":" + tunnelDetails.remotePort() + " --> localhost:" + tunnelDetails.localPort();
     }
 }
