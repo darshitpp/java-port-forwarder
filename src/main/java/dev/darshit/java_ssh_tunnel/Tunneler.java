@@ -59,6 +59,6 @@ public final class Tunneler {
 
     @Override
     public String toString() {
-        return tunnelDetails.remoteHost() + ":" + tunnelDetails.remotePort() + " --> localhost:" + tunnelDetails.localPort();
+        return tunnelDetails.remoteHost() + ":" + tunnelDetails.remotePort() + " is available on localhost:" + tunnelDetails.localPort();
     }
 }
